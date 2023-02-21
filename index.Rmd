@@ -1,9 +1,34 @@
---- 
+---
 title: "Data Analysis Portfolio"
 author: "Lucas Diniz"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
 
-# A Showcase of my Projects and my abilities 
 
+# Preface {.unnumbered}
+
+In this portfolio, you will find case studies on the area of Data Analysis.
+
+# Introduction {.unnumbered}
+
+We never had so much access to data in history like we have in the modern day. While such quantity is amazing on its own right, there is also danger in excess. For this, we need to properly understand the data, and this is the work of a Data Analyst. This professional's job is to properly understand the data and use it to various applications. 
+The demand for skilled data science practitioners in industry, academia, and the government is rapidly growing. This portfolio introduces concepts and skills that can help it tackle real-world data analysis challenges. 
+
+## Case studies {.unnumbered}
+
+Throughout the portfolio, we use motivating case studies. We try to realistically mimic a data scientist’s experience in each case study. We start by asking specific questions and answering these through data analysis for each of the concepts covered. We learn the ideas as a means to answer the questions. Case studies included in the portfolio are:
+
+| **Case Study**       | **Concept**            |
+|----------------------|------------------------|
+| Airbnb in Big Cities | Data Analysis with SQL |
+
+All codes and projects in this portfolio can be found on my Github page: [GitHub](https://github.com/Lukediniz)
+
+# About Me {#author .unnumbered}
+
+I'm a beginner Data Analyst who changed areas after becoming interested recently in data analysis. I have a master's degree in Historical Sociology, and I have noticed how many concepts from Data Analysis I already practiced on my previous studies in a more intuitive way. After that, I've become interested in diving deeper and learning programming and the necessary tools for the function.
+
+I love analyzing correlations and understanding how things affect each other and how some things can be optimized.
+
+On this page, you will find some of the projects I am currently working on. You can see my Linkedin. [Here](https://www.linkedin.com/in/lucas-diniz-85a632254/).\
