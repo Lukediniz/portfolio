@@ -8,7 +8,7 @@ editor_options:
 
 ------------------------------------------------------------------------
 
-1 - Introduction
+## Introduction
 
 Airbnb, Inc. is an American San Francisco-based company operating an
 online marketplace for short-term homestays and experiences. The company
@@ -36,7 +36,7 @@ format, so I decided to use SQL to better glance at the data and to
 filter it effectively. The SQL tool I used for this is "DB Browser for
 SQLite".
 
-2 - Getting into the data
+## Getting into the data
 
 At first I was curious about only the city of Tokyo, which is where I
 live. From my own personal life experience, I noticed not so many people
@@ -52,17 +52,32 @@ SELECT COUNT (DISTINCT id) FROM tokyolistings
 ![](images/tokyototalquantity.jpg)
 
 The result seemed surprisingly small, given the sheer size of Tokyo. We
-will come back to this result later. I then proceeded to the question
+will come back to this result later. I then proceeded to the question:
 
 "What are the most concentrated neighbourhoods in Tokyo?, i.e. the ones
 which have the most amount of airbnb locations?"
 
 For this, I used the Following query
 
-SELECT COUNT (DISTINCT id) as Number , neighbourhood_cleansed \
+SELECT COUNT (DISTINCT id) as Number , neighbourhood\
 FROM tokyolistings \
-GROUP BY neighbourhood_cleansed \
+GROUP BY neighbourhood \
 ORDER BY Number DESC;
+
+![](images/tokyoproperneighbourhood.jpg)
+
+Here, we can see the appearance of a NULL value within the
+neighbourhoods. This might be by some factors, but it most likely could
+be by the users not quite knowing in which neighbourhood their place was
+located or having no applicable value. Since the number of NULL values
+for neighbourhood is too high, it would not be a good idea to remove it
+from the analysis. However, looking better at the database structure
+shows us that there are two sets of neighbourhood data: one simply
+called "neighbourhood", and another stated as "neighbourhood_cleansed",
+which beyond not having any NULL values also seem to be easier to read.
+Since we don't have direct access to who compiled the data, it is hard
+to make 100% sure if this is a more reliable column to use, but we can
+try it.
 
 ![](images/tokyobyregion.jpg)
 
@@ -80,25 +95,32 @@ Given some variables, such as size, type of location - entire apartment,
 single room, etc -, and other amenities, the price can vary wildly
 between the same neighbourhood. However, by determining the average, we
 can find overall good neighbourhoods to look into. We can filter those
-by both price and location at the same time.
+by both price and location at the same time using the following query:
 
 SELECT COUNT (DISTINCT id) as number_of_locations,
-neighbourhood_cleansed as neighbourhood, ROUND(AVG(CAST(REPLACE(price,
-'\$', '') AS INT))) as average_price FROM tokyolistings \
-GROUP BY neighbourhood \
+neighbourhood_cleansed, ROUND(AVG(CAST(REPLACE(price, '\$', '') AS
+INT))) as average_price FROM tokyolistings \
+GROUP BY neighbourhood_cleansed \
 ORDER BY number_of_locations DESC;
 
-![](images/tokyoavgpriceplace.jpg)
+![](images/tokyocleansedprice.jpg)
 
 Because the result was being skewed because of the "\$" symbol and for
 the fact that the "price" column was a string, we need a way to convert
 it to a numeric value so that the analysis can go on without errors. We
-will also round the values With this query, we will even show which
+will also round the values with this query, we will even show which
 neighbourhood is the most expensive in descending order. For us to show
-starting from the cheapest to most expensive, we can simply replace the
-last line with
+in table form starting from the cheapest to most expensive, we can
+simply replace the last line with
 
 ORDER BY number_of_locations ASC;
+
+For the sake of better visual understanding, we can use graphs from now
+on to showcase the result of more complicated queries. We will limit the
+amount of values to the 20 most popular neighbourhoods to not overcrowd
+it with visual data.
+
+![](images/avgpricetokyo.png){width="680"}
 
 This gave us an interesting result, however we need to consider some
 factors in this step. First, we are not so sure about the currency in
@@ -116,8 +138,8 @@ bellow, where some values are simply "zero".
 
 ![](images/tokyopriceascending.jpg)
 
-Part of a job of an analyst is to evaluate the quality and integrity of
-the data, and try to work around or understand when such oddities
+Part of the work of an analyst is to evaluate the quality and integrity
+of the data, and try to work around or understand when such oddities
 happen. Some things might be simply input errors from the analyst, but
 many times it could be just inconsistent data from the source, so we
 need to be careful about that.
@@ -129,13 +151,13 @@ that there are too many high values in dollars, which seems a bit too
 overpriced, even though Tokyo has the fame of being an expensive city.
 We can also assume that the values are in the japanese Yen, where
 numbers tend to go higher than in dollars or euros. For example, the
-average price of 130 yen more or less equals to 1 dollar. The highest
-bill in Japan is that of 10.000 Yen, which is roughly valued at around
-75US\$ at the date of this analysis.
+average price of 130 yen roughly equals to 1 dollar. The highest bill in
+Japan is that of 10.000 Yen, which is roughly valued at around 75US\$ at
+the date of this analysis.
 
 Looking at all of this, we can go to the next step in our analysis.
 
-3 - Comparisons
+## Comparisons
 
 Since the number of results in Tokyo seemed relatively small for such a
 massive city. According to various sources, including
@@ -157,19 +179,15 @@ SELECT COUNT (DISTINCT id) as number_of_locations FROM newyorklistings
 ![](images/newyorktotallocations.jpg)
 
 The total result was more than four times that of Tokyo, which is
-impressive. Now let's see the price divided by neighbourhood.
+impressive. Now let's see the price divided by neighbourhood in a graph
+format.
 
-![](images/newyorkaverageprices.jpg)
+![](images/newyork.png){width="681"}
 
-Here, we can see the appearance of a NULL value within the
-neighbourhoods. This might be by some factors, but it most likely could
-be by the users not quite knowing in which neighbourhood their place was
-located or having no applicable value. Since the number of NULL values
-for neighbourhood is too high, it would not be a good idea to remove it
-from the analysis. A glance at the "price" column can show us that the
-values seem a bit more reasonable than Tokyo if in dollars, however one
-must wonder why these values are in a string format and not in numeric
-in the first place.
+A glance at the "price" column can show us that the values seem a bit
+more reasonable than Tokyo if in dollars, however one must wonder why
+these values are in a string format and not in numeric in the first
+place.
 
 Now, for the sake of brevity, let's do all the operations in the
 remaining cities.\
@@ -178,21 +196,21 @@ Paris
 
 ![](images/parisnumber.jpg)
 
-![](images/parisaverageprice.jpg)
+![](images/parisavg.png){width="707"}
 
 London
 
 ![](images/londonnumber.jpg)
 
-![](images/londonavgpriceperneighbourhoodupdated.jpg)
+![](images/london.png){width="699"}
 
 Rio de Janeiro
 
 ![](images/rionumber.jpg)
 
-![](images/rioaverageprice.jpg)
+![](images/rio.png){width="682"}
 
-And finally, Shanghai, which was a surprise
+And finally, Shanghai, which was a surprise.
 
 ![](images/shangaianalysis.jpg)
 
@@ -209,10 +227,10 @@ file, you can open it with a text editor.
 The final results had some interesting points, that could have a list of
 their own:
 
-1 - The Shanghai data was empty, even looking at the txt document showed
-us there is no data there. Even another data provided in the website had
-the same result. Unfortunately, we are prone to faulty data in this line
-of work.
+1 - The Shanghai data was empty, even looking at the text document
+showed us there is no data there. Even another data provided by the same
+website had the same result. Unfortunately, we are prone to faulty data
+in this line of work.
 
 2 - It was surprising to see that London had the most listings of all of
 the locations, even more than Paris. While London is also a great
