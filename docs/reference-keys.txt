@@ -1,0 +1,17 @@
+airbnb-brief-comparative-analysis
+introduction-1
+getting-into-the-data
+comparisons
+conclusion
+yu-gi-oh-tcg-inferential-analysis
+introduction-2
+considerations
+before-we-start
+prepping-the-data
+quantitative-showings-of-archetypes-attributes-and-types
+inferential-observations
+attributes-and-types
+level-rank-link-and-attackdefense
+further-exploration-of-attack-and-defense
+cluster-analysis
+conclusions

@@ -10,6 +10,8 @@ editor_options:
     wrap: 80
 ---
 
+# Yu-gi-oh! TCG Inferential Analysis
+
 ## Introduction
 
 Yu-gi-oh! is one of the strongest IPs on the entertainment industry to have come
@@ -22,7 +24,7 @@ which originally spawned by the manga.
 The trading card game was launched by *Konami* in 1999 in Japan and March 2002
 in North America.^[^ As of January 2021, the game is estimated to have sold
 about 35 billion cards worldwide and grossed over ¥1 trillion (\$9.64 billion).
-Regardless to say, it has an impressive fame.
+Needless to say, it has an impressive fame.
 
 Throghout over two decades of existence, the card game has launched more than 12
 thousand cards in its history. This analysis will try to do an inferential
@@ -101,7 +103,8 @@ are very important numerically: attack, defense, Link, Rank, Level and Pendulum
 Scale. Also, for the sake of simplicity, let's convert all of the files into a
 single table. Since the separating value is a "\$", we need to specify it in our
 code. I'm also going to include the source of each table in a separate column,
-it might be useful for our analysis.
+it might be useful for our analysis. But first of all, let's install some
+packages that will be useful in this analysis.
 
 ```{r}
 library(ggplot2)
@@ -112,40 +115,13 @@ library(tools)
 library(stringr)
 library(cluster)
 library(purrr)
-install.packages("dendextend")
-library(dendextend)
 
 ```
 
-```{r}
+I've already compiled all of the dataset into a single CSV file in order to
+facilitate the reading and make things simpler while analyzing.
 
-path <- 'C:/Users/Lucas/Documents/R/yugioh_database_csv'
-files <- list.files(path, pattern = "\\.csv$", full.names = TRUE)
-
-df <- data.frame()
-
-for (file in files) {
-  data <- read.table(file, header = TRUE, sep = "$", quote = "", stringsAsFactors = FALSE, fill = TRUE)
-  # converting character columns to integer data type
-  data$attack <- as.integer(data$attack)
-  data$defense <- as.integer(data$defense)
-  data$link <- as.integer(data$link)
-  data$rank <- as.integer(data$rank)
-  data$pendulum_scale <- as.integer(data$pendulum_scale)
-  data$level <- as.integer(data$level)
-  # adding a source column to indicate the source table
-  data$source <- tools::file_path_sans_ext(basename(file))
-  # joining the data to the existing data frame
-  df <- bind_rows(df, data)
-}
-
-# Saving the resulting DataFrame to a new CSV file
-
-output_path <- file.path(path, "Yugioh_R_merged_data.csv")
-write_csv(df, output_path)
-```
-
-Now, we may have a quick glance at the data using R
+Now, we may have a quick glance at the data using R.
 
 ```{r}
 
@@ -157,10 +133,10 @@ data
 There we have it. But something is off. If the number of existing cards barely
 surpasses 12.000, it seems weird that we have almost 29.811 different rows.
 Let's investigate by checking the number of different card names we have. We can
-make a function
+make a function for that.
 
 ```{r}
-distinct_names <- df %>%
+distinct_names <- data %>%
   distinct(Name) %>%
   nrow()
 distinct_names
@@ -184,7 +160,7 @@ sounding more adequate for our analysis.
 
 ```{r}
 data <- rename(data, Set = source)
-data
+colnames(data)
 ```
 
 Now, just in case, let's try an example. Let's look for a particular card that
@@ -194,7 +170,7 @@ be included in various Sets.
 
 ```{r}
 dark_magician <- data[data$Name == "Dark Magician", ]
-dark_magician
+head(dark_magician)
 ```
 
 Dark Magician was included in 45 different sets throughout the game's history.
@@ -278,20 +254,20 @@ for the 20 most popular ones. For that, let's create a new variable called
 "top_20_archetypes".
 
 ```{r}
-pattern <- "Supports archetypes /" # specify the pattern you want to extract
+pattern <- "Supports archetypes /" #Removing the pattern
 
-# filter for cards that support archetypes
+# filtering for cards that support archetypes
 top_20_archetypes <- data %>%
   filter(str_detect(card_supports, pattern)) %>%
   mutate(card_supports = str_replace(card_supports, pattern, "")) %>%
-  # combine D/D/D and D/D/D/D/D into one archetype
+  # combining D/D/D and D/D/D/D/D into one archetype
   mutate(card_supports = if_else(card_supports %in% c("D/D", "D/D/D", "D/", "D/D/D/D/D"), "DDD", card_supports)) %>%
   separate_rows(card_supports, sep = "/") %>%
   mutate(card_supports = trimws(card_supports)) %>%
-  # group by archetype and count occurrences
+  # grouping by archetype and counting occurrences
   group_by(card_supports) %>%
   summarize(count = n()) %>%
-  # add a sum of "D" and "DDD" rows and assign the result to only "DDD"
+  # adding "D" and "DDD" to only "DDD" 
   mutate(card_supports = if_else(card_supports == "D", "DDD", card_supports)) %>%
   group_by(card_supports) %>%
   summarize(count = sum(count)) %>%
@@ -315,16 +291,20 @@ such as "attribute", "type" and if the card is a "normal", "effect", "fusion",
 "synchro" or so on. First, let's try to plot the data by attributes.
 
 ```{r}
-# count the number of cards per attribute
+
+colors <- c("DARK" = "purple", "SPELL" = "turquoise1", "TRAP" = "violetred1", "DIVINE" = "gold",
+            "WATER" = "blue", "EARTH" = "brown", "WIND" = "green", "FIRE" = "red", "LIGHT" = "grey70")
+
 data %>%
-  filter(Attribute %in% c("DARK","SPELL","TRAP","DIVINE", "WATER", "EARTH", "WIND","FIRE","LIGHT")) %>%
+  filter(Attribute %in% c("DARK", "SPELL", "TRAP", "DIVINE", "WATER", "EARTH", "WIND", "FIRE", "LIGHT")) %>%
   group_by(Attribute) %>%
   summarize(count = n(), unique_names = n_distinct(Name)) %>%
-  ggplot(aes(x = Attribute, y = count)) +
+  ggplot(aes(x = Attribute, y = count, fill = Attribute)) +
   geom_bar(stat = "identity") +
+  scale_fill_manual(values = colors) +
   xlab("Attribute") +
   ylab("Number of Cards") +
-  ggtitle("Attribute distribution")+
+  ggtitle("Attribute distribution") +
   theme(axis.text.x = element_text(angle = 75, hjust = 1))
 ```
 
@@ -347,24 +327,23 @@ It is a great contrast. "Divine" monsters really are rare in the game.
 Now, within the monsters, let's see how this division works using a chart.
 
 ```{r}
-# Subset the data to only include monsters and specified types
+#Subsetting the data to only include monsters and specified types
 types <- c("Normal", "Effect", "Ritual", "Fusion", "Synchro", "Xyz", "Pendulum", "Link","Tuner")
 monsters <- subset(data, !is.na(Attribute) & Attribute != "SPELL" & Attribute != "TRAP")
 
-# Count the number of monsters of each type
+#Counting the number of monsters of each type
 type_counts <- unlist(sapply(types, function(type) {
   sum(str_detect(monsters$type, type))
 }))
 
-# Calculate the percentage of monsters of each type
+#Calculating the percentage of monsters of each type
 type_pct <- round(type_counts/sum(type_counts)*100)
 
-# Create a data.frame with the type labels, counts, and percentages
 type_data <- data.frame(type_labels = names(type_counts),
                         type_counts = type_counts,
                         type_pct = type_pct)
 
-# Assign colors to each type
+#Assigning colors to each type
 type_colors <- c("Normal" = "burlywood3",
                  "Effect" = "burlywood4",
                  "Link" = "blue4",
@@ -375,7 +354,7 @@ type_colors <- c("Normal" = "burlywood3",
                  "Tuner" = "orange",
                  "Xyz" = "gray0")
 
-# Plot the histogram
+# Plotting a histogram
 ggplot(type_data, aes(x = type_labels, y = type_counts, fill = type_labels)) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = type_colors) +
@@ -400,30 +379,28 @@ Now, for the last quantitative visualization, let's see the distribution amongst
 the game types, like "Spellcaster", "Dragon" and etc.
 
 ```{r}
-# Subset the data to only include monsters
+# Subsetting the data to only include monsters
 monsters <- subset(data, Attribute != "SPELL" & Attribute != "TRAP")
 
-# Extract the first type for each monster and remove the "[" character
+# Extracting the first type for each monster and remove the "[" character
 monsters$type <- sub("\\[", "", sub("/.*", "", monsters$type))
 
-# Define the types to include in the plot
+# Defining the types to include in the plot
 included_types <- c("Aqua", "Beast", "Beast-Warrior", "Cyberse", "Dinosaur", 
                     "Divine-beast", "Dragon", "Fairy", "Fiend", "Fish", "Insect", 
                     "Machine", "Plant", "Psychic", "Pyro", "Reptile", "Rock", 
                     "Sea Serpent", "Spellcaster", "Thunder", "Warrior", 
                     "Winged Beast", "Wyrm", "Zombie")
 
-# Subset the data to include only the included types
 monsters <- monsters[monsters$type %in% included_types,]
 
 # Count the number of monsters of each type
 type_counts <- table(monsters$type)
 
-# Create a data.frame with the type labels and counts
+# Creating a data.frame with the type labels and counts
 type_data <- data.frame(type_labels = names(type_counts)[names(type_counts) != "Other"],
                         type_counts = as.vector(type_counts)[names(type_counts) != "Other"])
 
-# Assign colors to each type
 type_colors <- c("Aqua" = "blue",
                  "Beast" = "coral4",
                  "Beast-Warrior" = "chocolate2",
@@ -450,7 +427,7 @@ type_colors <- c("Aqua" = "blue",
                  "Zombie" = "darkgreen"
                  )
 
-# Plot the histogram
+# Plotting the histogram
 ggplot(type_data, aes(x = type_labels, y = type_counts, fill = type_labels)) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = type_colors, guide = FALSE) +
@@ -476,9 +453,9 @@ a plot.
 ```{r}
 library(ggplot2)
 subset_data <- subset(data, !is.na(level) | !is.na(rank) | !is.na(link), select = c("level", "rank", "link"))
-subset_data
 
-# Get the unique integer values in each column
+
+# Getting the unique integer values in each column
 level_values <- unique(as.integer(subset_data$level[!is.na(subset_data$level)]))
 rank_values <- unique(as.integer(subset_data$rank[!is.na(subset_data$rank)]))
 link_values <- unique(as.integer(subset_data$link[!is.na(subset_data$link)]))
@@ -547,10 +524,10 @@ correlation between the two. First let's extract again the monster types, just
 like the last code.
 
 ```{r}
-# Subset the data to only include monsters
+#Removing spells and traps, so it only includes monsters
 monsters <- subset(data, Attribute != "SPELL" & Attribute != "TRAP")
 
-# Extract the first type for each monster and remove the "[" character
+#Extracting the first type for each monster and removing the "[" character
 monsters$type <- sub("\\[", "", sub("/.*", "", monsters$type))
 
 # Define the types to include in the plot
@@ -560,16 +537,16 @@ included_types <- c("Aqua", "Beast", "Beast-Warrior", "Cyberse", "Dinosaur",
                     "Sea Serpent", "Spellcaster", "Thunder", "Warrior", 
                     "Winged Beast", "Wyrm", "Zombie")
 
-# Subset the data to include only the included types
+# Subsetting the data to include only the included types
 monsters <- monsters[monsters$type %in% included_types,]
 
 
 
-# Convert "types" and "Attributes" to numeric values so that we can use in the cor() function to determine correlation
+#Converting "types" and "Attributes" to numeric values so that we can use in the cor() function to determine correlation
 monsters$type_numeric <- as.numeric(factor(monsters$type))
 monsters$attribute_numeric <- as.numeric(factor(monsters$Attribute))
 
-# Calculate the correlation
+#Calculating the correlation
 correlation_typeattribute <- cor(monsters$type_numeric, monsters$attribute_numeric)
 correlation_typeattribute
 ```
@@ -620,7 +597,7 @@ without some sort of lead up to there, in order to promote competitive balance.
 Because of this, let's plot these relations in a graph.
 
 ```{r}
-# First between Attack and Level
+#First between Attack and Level
 plot(!is.na(data$attack), !is.na(data$level), xlab = "Attack", ylab = "Level", main = "Scatterplot of Attack / Level")
 abline(lm(!is.na(data$level) ~ !is.na(data$attack)), col = "red")
 
@@ -630,7 +607,7 @@ abline(lm(!is.na(data$level) ~ !is.na(data$defense)), col = "red")
 
 ```
 
-Now, for the sake of comparisson, let's see how Attack and Defense fair in a
+Now, for the sake of comparison, let's see how Attack and Defense fair in a
 graph being correlated to other variable, such as "Rank", which doesn't have a
 high correlation as we saw before.
 
@@ -654,7 +631,7 @@ cor(subset)
 install.packages("psych")
 library(psych)
 
-#create pairs plot
+
 pairs.panels(subset)
 ```
 
@@ -668,7 +645,7 @@ use it.
 ```{r}
 attack_data <- na.omit(data$attack)
 
-# Computing the standard deviation of the non-missing values in the "attack" column
+# Calculating the standard deviation of the non-missing values in the "attack" column
 sd_attack <- sd(attack_data)
 
 # Printing the value of sd_attack
@@ -677,7 +654,7 @@ print(sd_attack)
 
 
 mean(attack_data)
-# Computing the proportion of non-missing values in the "attack" column
+# Calculating the proportion of non-missing values in the "attack" column
 p <- length(attack_data) / nrow(data)
 p
 # Printing the value of p
@@ -690,7 +667,7 @@ mean(abs(dist_attack))
 
 #Finally, let's find the outlier values.
 
-# Finding the quartiles and IQR of the "attack" column
+#Finding the quartiles and IQR of the "attack" column
 q1 <- quantile(attack_data, 0.25)
 q3 <- quantile(attack_data, 0.75)
 iqr <- q3 - q1
@@ -698,13 +675,13 @@ iqr <- q3 - q1
 
 outlier.threshold <- 1.5 * iqr
 
-# Identifying the outliers in the "attack" column
+#Identifying the outliers in the "attack" column
 lower.threshold <- q1 - outlier.threshold
 upper.threshold <- q3 + outlier.threshold
 outliers <- attack_data[attack_data < lower.threshold | attack_data > upper.threshold]
-# Count the frequency of each outlier value
+#Count the frequency of each outlier value
 outlier_freq <- table(outliers)
-# Print the outliers
+#Print the outliers
 print(outlier_freq)
 
 
@@ -712,14 +689,14 @@ print(outlier_freq)
 
 hist(attack_data, freq = FALSE, col = "lightblue", main = "Histogram of Attack Data", xlab = "Attack Value")
 
-# Add a normal density curve to the plot
+#Adding a normal density curve to the plot
 curve(dnorm(x, mean = mean(attack_data), sd = sd(attack_data)), add = TRUE, col = "red", lwd = 2)
 
-# Add vertical lines at the upper and lower thresholds
+#Adding vertical lines at the upper and lower thresholds
 abline(v = lower.threshold, col = "blue", lwd = 2, lty = 2)
 abline(v = upper.threshold, col = "blue", lwd = 2, lty = 2)
 
-# Add a rug plot of the outliers to the plot
+#Adding a rug plot of the outliers to the plot
 rug(outliers, col = "darkred", lwd = 2)
 ```
 
@@ -736,19 +713,19 @@ our code.
 ```{r}
 defense_data <- na.omit(data$defense)
 
-# Computing the standard deviation of the non-missing values in the "attack" column
+#Computing the standard deviation of the non-missing values in the "attack" column
 sd_defense <- sd(defense_data)
 
-# Printing the value of sd_attack
+#Printing the value of sd_attack
 print(sd_defense)
 
 
 
 mean(defense_data)
-# Computing the proportion of non-missing values in the "attack" column
+#Computing the proportion of non-missing values in the "attack" column
 p <- length(defense_data) / nrow(data)
 p
-# Printing the value of p
+#Printing the value of p
 qnorm(0.60424,mean = 1278.86, sd = 849.9999)
 
 #Let's also find the Mean absolute deviation
@@ -770,9 +747,9 @@ outlier.threshold <- 1.5 * iqr
 lower.threshold <- q1 - outlier.threshold
 upper.threshold <- q3 + outlier.threshold
 outliers <- attack_data[defense_data < lower.threshold | defense_data > upper.threshold]
-# Count the frequency of each outlier value
+# Counting the frequency of each outlier value
 outlier_freq <- table(outliers)
-# Print the outliers
+
 print(outlier_freq)
 
 
@@ -780,14 +757,14 @@ print(outlier_freq)
 
 hist(defense_data, freq = FALSE, col = "lightblue", main = "Histogram of Defense Data", xlab = "Defense Value")
 
-# Add a normal density curve to the plot
+# Adding a normal density curve to the plot
 curve(dnorm(x, mean = mean(defense_data), sd = sd(defense_data)), add = TRUE, col = "red", lwd = 2)
 
-# Add vertical lines at the upper and lower thresholds
+#Adding vertical lines at the upper and lower thresholds
 abline(v = lower.threshold, col = "blue", lwd = 2, lty = 2)
 abline(v = upper.threshold, col = "blue", lwd = 2, lty = 2)
 
-# Add a rug plot of the outliers to the plot
+#Adding a rug plot of the outliers to the plot
 rug(outliers, col = "darkred", lwd = 2)
 ```
 
@@ -795,30 +772,29 @@ Let's see the correlation between the values of "Attack" and "Defense" and the
 types we saw before.
 
 ```{r}
-# Subset the data to only include monsters
 monsters <- subset(data, Attribute != "SPELL" & Attribute != "TRAP")
 
-# Extract the first type for each monster and remove the "[" character
+#Extracting the first type for each monster and remove the "[" character
 monsters$type <- sub("\\[", "", sub("/.*", "", monsters$type))
 
-# Define the types to include in the plot
+# Defining the types to include in the plot
 included_types <- c("Aqua", "Beast", "Beast-Warrior", "Cyberse", "Dinosaur", 
                     "Divine-beast", "Dragon", "Fairy", "Fiend", "Fish", "Insect", 
                     "Machine", "Plant", "Psychic", "Pyro", "Reptile", "Rock", 
                     "Sea Serpent", "Spellcaster", "Thunder", "Warrior", 
                     "Winged Beast", "Wyrm", "Zombie")
 
-# Subsetting the data to include only the included types
+#Subsetting the data to include only the included types
 monsters <- monsters[monsters$type %in% included_types,]
 
-# Convert "types" and "Attributes" to numeric values so that we can use in the cor() function to determine correlation
+#Convert "types" and "Attributes" to numeric values so that we can use in the cor() function to determine correlation
 monsters$type_numeric <- as.numeric(factor(monsters$type))
 
-# Subset data$attack and data$defense to only include the monsters
+#Subsetting attack and defense to only include the monsters
 data_attack_monsters <- data[data$Name %in% monsters$Name, "attack"]
 data_defense_monsters <- data[data$Name %in% monsters$Name, "defense"]
 
-# Calculate the correlation between type and attack/defense
+#Calculating the correlation between type and attack/defense
 cor(monsters$type_numeric, monsters$attack, use = "complete.obs")
 cor(monsters$type_numeric, monsters$defense, use = "complete.obs")
 
@@ -834,18 +810,17 @@ Now, let's move on to a cluster analysis of six variables we've seen before:
 "Attack", "Defense", "Level", "Rank", "Link" and "Type".
 
 ```{r}
-#Let's use monsters$type_numeric as 
 types <- monsters$type_numeric 
 atk <- !is.na(data$attack)
 def <- !is.na(data$defense)
 
 
-# Create indicator variables for rank, level, and link, because they are mutually exclusive
+#Creating indicator variables for rank, level, and link, because they are mutually exclusive
 rank_ind <- ifelse(!is.na(data$rank), 1, 0)
 level_ind <- ifelse(!is.na(data$level), 1, 0)
 link_ind <- ifelse(!is.na(data$link), 1, 0)
 
-# Combining the different variables into a single data frame in order to plot with clusters
+#Combining the different variables into a single data frame in order to plot with clusters
 variables <- data_combined <- cbind(types, atk, def, rank_ind, level_ind, link_ind)
 
 tot_withinss <- map_dbl(1:12,  function(k){
@@ -858,7 +833,7 @@ elbow_df <- tibble(k = 1:12, tot_withinss = map_dbl(1:12,  function(k){
   model$tot.withinss
 }))
 
-# Plot the elbow plot
+#Plotting the elbow plot
 ggplot(elbow_df, aes(x = k, y = tot_withinss)) +
   geom_line() +
   scale_x_continuous(breaks = 1:12) +
@@ -870,24 +845,24 @@ According to the elbow plot above, it seems like 2 is the optimal number of
 clusters of the six variables chosen.
 
 ```{r}
-# Remove rows with missing values in attack or defense columns
+# Removing rows with missing values in attack or defense columns
 variablesc <- monsters[!is.na(monsters$attack) & !is.na(monsters$defense),]
 
-# Create indicator variables for rank, level, and link, because they are mutually exclusive
+#Creating indicator variables for rank, level, and link, because they are mutually exclusive
 rank_ind <- ifelse(!is.na(variablesc$rank), variablesc$rank, 0)
 level_ind <- ifelse(!is.na(variablesc$level), variablesc$level, 0)
 link_ind <- ifelse(!is.na(variablesc$link), variablesc$link, 0)
 
-# Combine the different variables into a single data frame in order to plot with clusters
+#Combining the different variables into a single data frame in order to plot with clusters
 newvariables <- data.frame(types = variablesc$type_numeric, atk = !is.na(variablesc$attack), def = !is.na(variablesc$defense), rank_ind, level_ind, link_ind)
 
 set.seed(100)
 kmeans_variables <- kmeans(newvariables, centers = 4)
 
-# Add cluster labels to variables data frame
+# Adding cluster labels to variables data frame
 newvariables$cluster <- as.factor(kmeans_variables$cluster)
 
-# Plot variables with cluster labels
+# Plotting variables with cluster labels
 ggplot(newvariables, aes(x = atk, y = def, color = cluster)) +
   geom_point() +
   labs(title = "K-Means Clustering of Variables", x = "Attack", y = "Defense") +
@@ -904,11 +879,11 @@ atkdef <- data.frame(atk,def)
 
 kmeans_atkdef <- kmeans(atkdef, centers = 4)
 
-# Add cluster labels to variables data frame
+# Adding cluster labels to variables data frame
 atkdef$cluster <- as.factor(kmeans_atkdef$cluster)
 
 
-# Plot variables with cluster labels
+# Plotting variables with cluster labels
 ggplot(atkdef, aes(x = atk, y = def, color = cluster)) +
   geom_point() +
   labs(title = "K-Means Clustering of Variables", x = "Attack", y = "Defense") +
