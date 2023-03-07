@@ -1,16 +1,15 @@
---------------------------------------------------------------------------------
-
 ---
-title: "An inferential analysis of Yu-gi-oh! Trading Card Game"
-author: "Lucas Diniz"
-date: "2023-03-01"
-output: html_document
 editor_options: 
   markdown: 
     wrap: 80
 ---
 
 # Yu-gi-oh! TCG Inferential Analysis
+------------------------------------------------------------------------
+
+
+
+![](images/yugioh-share.jpg)
 
 ## Introduction
 
@@ -103,10 +102,9 @@ are very important numerically: attack, defense, Link, Rank, Level and Pendulum
 Scale. Also, for the sake of simplicity, let's convert all of the files into a
 single table. Since the separating value is a "\$", we need to specify it in our
 code. I'm also going to include the source of each table in a separate column,
-it might be useful for our analysis. But first of all, let's install some
-packages that will be useful in this analysis.
+it might be useful for our analysis.
 
-```{r}
+```{r include=FALSE}
 library(ggplot2)
 library(tidyr)
 library(dplyr)
@@ -115,7 +113,8 @@ library(tools)
 library(stringr)
 library(cluster)
 library(purrr)
-
+install.packages("reshape2")
+library(reshape2)
 ```
 
 I've already compiled all of the dataset into a single CSV file in order to
@@ -632,7 +631,26 @@ install.packages("psych")
 library(psych)
 
 
-pairs.panels(subset)
+pairs.panels(subset, main = "Correlation Matrix of Atk, Def, Lv")
+```
+
+Let's try it in heatmap format:\
+
+```{r}
+# Compute the correlation matrix
+cor_mat <- cor(subset)
+
+
+ggplot(data = melt(cor_mat)) +
+  geom_tile(aes(x = Var1, y = Var2, fill = value)) +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+  labs(title = "Correlation Matrix of Attack, Defense, and Level",
+       x = "", y = "") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom")
 ```
 
 ### Further Exploration of Attack and Defense
@@ -842,53 +860,43 @@ ggplot(elbow_df, aes(x = k, y = tot_withinss)) +
 ```
 
 According to the elbow plot above, it seems like 2 is the optimal number of
-clusters of the six variables chosen.
+clusters of the six variables chosen. Let's try making a cluster plot of 3
+variables that we saw have a high correlation: Attack, Defense and Level.
 
 ```{r}
-# Removing rows with missing values in attack or defense columns
-variablesc <- monsters[!is.na(monsters$attack) & !is.na(monsters$defense),]
+# Create a new data frame with the three columns of interest
+atk_def_level <- data[, c("attack", "defense", "level")]
 
-#Creating indicator variables for rank, level, and link, because they are mutually exclusive
-rank_ind <- ifelse(!is.na(variablesc$rank), variablesc$rank, 0)
-level_ind <- ifelse(!is.na(variablesc$level), variablesc$level, 0)
-link_ind <- ifelse(!is.na(variablesc$link), variablesc$link, 0)
+# Remove any rows containing missing values
+atk_def_level <- na.omit(atk_def_level)
 
-#Combining the different variables into a single data frame in order to plot with clusters
-newvariables <- data.frame(types = variablesc$type_numeric, atk = !is.na(variablesc$attack), def = !is.na(variablesc$defense), rank_ind, level_ind, link_ind)
+# Perform k-means clustering on the data
+kmeans_atk_def_level <- kmeans(atk_def_level, centers = 4)
 
-set.seed(100)
-kmeans_variables <- kmeans(newvariables, centers = 4)
+# Add cluster labels to the data frame
+atk_def_level$cluster <- as.factor(kmeans_atk_def_level$cluster)
 
-# Adding cluster labels to variables data frame
-newvariables$cluster <- as.factor(kmeans_variables$cluster)
-
-# Plotting variables with cluster labels
-ggplot(newvariables, aes(x = atk, y = def, color = cluster)) +
+# Create a scatterplot of attack vs. defense with cluster colors
+ggplot(atk_def_level, aes(x = attack, y = defense, color = cluster)) +
   geom_point() +
-  labs(title = "K-Means Clustering of Variables", x = "Attack", y = "Defense") +
+  labs(title = "K-Means Clustering of Attack, Defense, and Level",
+       x = "Attack", y = "Defense") +
   scale_color_discrete(name = "Cluster")
-
 ```
 
-Well, that is certainly disappointing. Maybe we are using too many variables in
-our cluster plot. Let's try using only "Attack" and "Defense" then.
+That's a very interesting graphic. These values seem in accord with what we saw
+before, with specially huge concentrations between the values of 1500-2000
+
+Let's also make a dendogram.
 
 ```{r}
-atkdef <- data.frame(atk,def)
+#Setting the distance matrix
+d <- dist(atk_def_level)
 
+#Hhierarchical clustering
+hc <- hclust(d)
 
-kmeans_atkdef <- kmeans(atkdef, centers = 4)
-
-# Adding cluster labels to variables data frame
-atkdef$cluster <- as.factor(kmeans_atkdef$cluster)
-
-
-# Plotting variables with cluster labels
-ggplot(atkdef, aes(x = atk, y = def, color = cluster)) +
-  geom_point() +
-  labs(title = "K-Means Clustering of Variables", x = "Attack", y = "Defense") +
-  scale_color_discrete(name = "Cluster")
-
+plot(hc, main = 'Plot of Attack, Defense and Level')
 ```
 
 ## Conclusions

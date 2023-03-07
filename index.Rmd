@@ -20,6 +20,7 @@ Throughout the portfolio, we use motivating case studies. We try to realisticall
 | **Case Study**       | **Concept**                   |
 |----------------------|-------------------------------|
 | Airbnb in Big Cities | Descriptive Analysis with SQL |
+| Airbnb in Big Cities | Inferential Analysis with R   |
 
 All codes and projects in this portfolio can be found on my Github page: [GitHub](https://github.com/Lukediniz)
 
