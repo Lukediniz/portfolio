@@ -746,7 +746,7 @@ for the 20 most popular ones. For that, let’s create a new variable called
 <span id="cb14-4"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Number of Cards&quot;</span>) <span class="sc">+</span></span>
 <span id="cb14-5"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Top 20 Archetypes&quot;</span>)</span>
 <span id="cb14-6"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb14-6" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">75</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Using the same principles, we can also understand other quantitative metrics
 such as “attribute”, “type” and if the card is a “normal”, “effect”, “fusion”,
 “synchro” or so on. First, let’s try to plot the data by attributes.</p>
@@ -764,7 +764,7 @@ such as “attribute”, “type” and if the card is a “normal”, “effect
 <span id="cb15-12"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Number of Cards&quot;</span>) <span class="sc">+</span></span>
 <span id="cb15-13"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Attribute distribution&quot;</span>) <span class="sc">+</span></span>
 <span id="cb15-14"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">75</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Seeing by the graph, spells are surprisingly popular, being by far the most
 popular type of card. Amongst the monsters, “DARK” takes the top spot with the
 most representatives while “DIVINE” accounts for very few. Just out of
@@ -819,7 +819,7 @@ see how many “DARK” monsters there are exactly.</p>
 <span id="cb20-37"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb20-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
 <span id="cb20-38"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb20-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(type_data<span class="sc">$</span>type_counts))) <span class="sc">+</span></span>
 <span id="cb20-39"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb20-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">75</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>This is a pretty interesting distribution. At the beginning of the game, Effect
 monsters were relatively rare. Now they easily outnumber every single other
 subtype of monster card. It is also important to note that Ritual is the
@@ -887,7 +887,7 @@ the game types, like “Spellcaster”, “Dragon” and etc.</p>
 <span id="cb21-59"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb21-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(type_data<span class="sc">$</span>type_counts))) <span class="sc">+</span></span>
 <span id="cb21-60"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb21-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">75</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
 <span id="cb21-61"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb21-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> type_counts), <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>), <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Finally, let’s move on to levels/ranks/links. These are a huge part of the game
 and most of the strategies hurl around the manipulation of these values for
 follow-up combos and subsequent plays. Most of the times, summoning a “boss
@@ -921,7 +921,7 @@ a plot.</p>
 <span id="cb22-24"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb22-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Value&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Count&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;Variable&quot;</span>) <span class="sc">+</span></span>
 <span id="cb22-25"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb22-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb22-26"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb22-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>Here we can see that Level 3 is the most common occurrence by a very large
 margin. In fact, impressively so.</p>
 <p>Finally, in our set of quantitative observations, let’s address “Attack” and
@@ -1029,16 +1029,16 @@ without some sort of lead up to there, in order to promote competitive balance.<
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co">#First between Attack and Level</span></span>
 <span id="cb45-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>attack), <span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>level), <span class="at">xlab =</span> <span class="st">&quot;Attack&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Level&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Scatterplot of Attack / Level&quot;</span>)</span>
 <span id="cb45-3"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="fu">lm</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>level) <span class="sc">~</span> <span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>attack)), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>attack), <span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>level), <span class="at">xlab =</span> <span class="st">&quot;Defense&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Level&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Scatterplot of Defense / Level&quot;</span>)</span>
 <span id="cb46-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="fu">lm</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>level) <span class="sc">~</span> <span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>defense)), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-42-2.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
 <p>Now, for the sake of comparison, let’s see how Attack and Defense fair in a
 graph being correlated to other variable, such as “Rank”, which doesn’t have a
 high correlation as we saw before.</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>attack), <span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>rank), <span class="at">xlab =</span> <span class="st">&quot;Attack&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Rank&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Scatterplot of Attack / Rank&quot;</span>)</span>
 <span id="cb47-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="fu">lm</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>rank) <span class="sc">~</span> <span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>attack)), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>Now, let’s see if we can correlate the three variables together in a plot
 matrix.</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb48-1" aria-hidden="true" tabindex="-1"></a>atk <span class="ot">&lt;-</span> <span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>attack)</span>
@@ -1057,7 +1057,7 @@ matrix.</p>
 <span id="cb52-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-3"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-4"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs.panels</span>(subset)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="further-exploration-of-attack-and-defense" class="section level3 hasAnchor" number="2.6.3">
 <h3><span class="header-section-number">2.6.3</span> Further Exploration of Attack and Defense<a href="yu-gi-oh-tcg-inferential-analysis.html#further-exploration-of-attack-and-defense" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1118,7 +1118,7 @@ use it.</p>
 <span id="cb65-9"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb65-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-10"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb65-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Adding a rug plot of the outliers to the plot</span></span>
 <span id="cb65-11"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb65-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rug</span>(outliers, <span class="at">col =</span> <span class="st">&quot;darkred&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>Turns out that in “Attack”, our outliers - that is, values that greatly differ
 from the distribution - are basically concentrated on the higher end. So it
 turns out, in “Yu-gi-oh!” a huge quantity of monsters have attacks from 3000 or
@@ -1182,7 +1182,7 @@ our code.</p>
 <span id="cb78-9"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb78-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb78-10"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb78-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Adding a rug plot of the outliers to the plot</span></span>
 <span id="cb78-11"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb78-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rug</span>(outliers, <span class="at">col =</span> <span class="st">&quot;darkred&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Let’s see the correlation between the values of “Attack” and “Defense” and the
 types we saw before.</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb79-1" aria-hidden="true" tabindex="-1"></a>monsters <span class="ot">&lt;-</span> <span class="fu">subset</span>(data, Attribute <span class="sc">!=</span> <span class="st">&quot;SPELL&quot;</span> <span class="sc">&amp;</span> Attribute <span class="sc">!=</span> <span class="st">&quot;TRAP&quot;</span>)</span>
@@ -1247,7 +1247,7 @@ types we saw before.</p>
 <span id="cb85-13"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb85-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb85-14"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb85-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">+</span></span>
 <span id="cb85-15"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb85-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Elbow plot of variables&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Clusters&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Total within-cluster sum of squares&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>According to the elbow plot above, it seems like 2 is the optimal number of
 clusters of the six variables chosen.</p>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Removing rows with missing values in attack or defense columns</span></span>
@@ -1272,7 +1272,7 @@ clusters of the six variables chosen.</p>
 <span id="cb86-20"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb86-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb86-21"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb86-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;K-Means Clustering of Variables&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Attack&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Defense&quot;</span>) <span class="sc">+</span></span>
 <span id="cb86-22"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb86-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">name =</span> <span class="st">&quot;Cluster&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>Well, that is certainly disappointing. Maybe we are using too many variables in
 our cluster plot. Let’s try using only “Attack” and “Defense” then.</p>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb87-1" aria-hidden="true" tabindex="-1"></a>atkdef <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(atk,def)</span>
@@ -1289,7 +1289,7 @@ our cluster plot. Let’s try using only “Attack” and “Defense” then.</p
 <span id="cb87-12"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb87-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb87-13"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb87-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;K-Means Clustering of Variables&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Attack&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Defense&quot;</span>) <span class="sc">+</span></span>
 <span id="cb87-14"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb87-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">name =</span> <span class="st">&quot;Cluster&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 </div>
 <div id="conclusions" class="section level2 hasAnchor" number="2.7">
