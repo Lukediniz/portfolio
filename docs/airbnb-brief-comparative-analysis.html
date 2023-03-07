@@ -30,7 +30,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="author.html"/>
+<link rel="prev" href="index.html"/>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -72,15 +72,13 @@
 <li><a href="./">Data Analysis Portfolio</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
 <ul>
-<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#case-studies"><i class="fa fa-check"></i>Case studies</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#case-studies"><i class="fa fa-check"></i>Case studies</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="author.html"><a href="author.html"><i class="fa fa-check"></i>About Me</a></li>
 <li class="chapter" data-level="1" data-path="airbnb-brief-comparative-analysis.html"><a href="airbnb-brief-comparative-analysis.html"><i class="fa fa-check"></i><b>1</b> Airbnb Brief Comparative Analysis</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="airbnb-brief-comparative-analysis.html"><a href="airbnb-brief-comparative-analysis.html#introduction-1"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.1" data-path="airbnb-brief-comparative-analysis.html"><a href="airbnb-brief-comparative-analysis.html#introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
 <li class="chapter" data-level="1.2" data-path="airbnb-brief-comparative-analysis.html"><a href="airbnb-brief-comparative-analysis.html#getting-into-the-data"><i class="fa fa-check"></i><b>1.2</b> Getting into the data</a></li>
 <li class="chapter" data-level="1.3" data-path="airbnb-brief-comparative-analysis.html"><a href="airbnb-brief-comparative-analysis.html#comparisons"><i class="fa fa-check"></i><b>1.3</b> Comparisons</a></li>
 <li class="chapter" data-level="1.4" data-path="airbnb-brief-comparative-analysis.html"><a href="airbnb-brief-comparative-analysis.html#conclusion"><i class="fa fa-check"></i><b>1.4</b> Conclusion</a></li>
@@ -107,8 +105,8 @@
 <div id="airbnb-brief-comparative-analysis" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> Airbnb Brief Comparative Analysis<a href="airbnb-brief-comparative-analysis.html#airbnb-brief-comparative-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <hr />
-<div id="introduction-1" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> Introduction<a href="airbnb-brief-comparative-analysis.html#introduction-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="introduction" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Introduction<a href="airbnb-brief-comparative-analysis.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Airbnb, Inc. is an American San Francisco-based company operating an
 online marketplace for short-term homestays and experiences. The company
 acts as a broker and charges a commission from each booking. The company
@@ -142,17 +140,14 @@ opt to choose an Airbnb location when they come to Tokyo, prefering
 staying in hotels. So my first question was:</p>
 <p>“How many available locations are there in Tokyo?”</p>
 <p>This can be accessed by the simple query:</p>
-<p>SELECT COUNT (DISTINCT id) FROM tokyolistings</p>
+<p>``<code>SELECT COUNT (DISTINCT id) FROM tokyolistings</code>```</p>
 <p><img src="images/tokyototalquantity.jpg" /></p>
 <p>The result seemed surprisingly small, given the sheer size of Tokyo. We
 will come back to this result later. I then proceeded to the question:</p>
 <p>“What are the most concentrated neighbourhoods in Tokyo?, i.e. the ones
 which have the most amount of airbnb locations?”</p>
 <p>For this, I used the Following query</p>
-<p>SELECT COUNT (DISTINCT id) as Number , neighbourhood<br />
-FROM tokyolistings<br />
-GROUP BY neighbourhood<br />
-ORDER BY Number DESC;</p>
+<p>``<code>SELECT COUNT (DISTINCT id) as Number , neighbourhoodFROM tokyolistingsGROUP BY neighbourhoodORDER BY Number DESC;</code>```</p>
 <p><img src="images/tokyoproperneighbourhood.jpg" /></p>
 <p>Here, we can see the appearance of a NULL value within the
 neighbourhoods. This might be by some factors, but it most likely could
@@ -179,11 +174,7 @@ single room, etc -, and other amenities, the price can vary wildly
 between the same neighbourhood. However, by determining the average, we
 can find overall good neighbourhoods to look into. We can filter those
 by both price and location at the same time using the following query:</p>
-<p>SELECT COUNT (DISTINCT id) as number_of_locations,
-neighbourhood_cleansed, ROUND(AVG(CAST(REPLACE(price, ‘$’, ’’) AS
-INT))) as average_price FROM tokyolistings<br />
-GROUP BY neighbourhood_cleansed<br />
-ORDER BY number_of_locations DESC;</p>
+<p>``<code>SELECT COUNT (DISTINCT id) as number_of_locations, neighbourhood_cleansed, ROUND(AVG(CAST(REPLACE(price, '$', '') AS INT))) as average_price FROM tokyolistingsGROUP BY neighbourhood_cleansedORDER BY number_of_locations DESC;</code>```</p>
 <p><img src="images/tokyocleansedprice.jpg" /></p>
 <p>Because the result was being skewed because of the “$” symbol and for
 the fact that the “price” column was a string, we need a way to convert
@@ -192,7 +183,7 @@ will also round the values with this query, we will even show which
 neighbourhood is the most expensive in descending order. For us to show
 in table form starting from the cheapest to most expensive, we can
 simply replace the last line with</p>
-<p>ORDER BY number_of_locations ASC;</p>
+<p>``<code>ORDER BY number_of_locations ASC;</code>```</p>
 <p>For the sake of better visual understanding, we can use graphs from now
 on to showcase the result of more complicated queries. We will limit the
 amount of values to the 20 most popular neighbourhoods to not overcrowd
@@ -242,7 +233,7 @@ over the data quickly using just two queries: quantity of total
 available places and then the division by price in each neighbourhood.
 Let’s start with New York.</p>
 <p>For a quick reminder, this would be the query for this case</p>
-<p>SELECT COUNT (DISTINCT id) as number_of_locations FROM newyorklistings</p>
+<p>``<code>SELECT COUNT (DISTINCT id) as number_of_locations FROM newyorklistings</code>```</p>
 <p><img src="images/newyorktotallocations.jpg" /></p>
 <p>The total result was more than four times that of Tokyo, which is
 impressive. Now let’s see the price divided by neighbourhood in a graph
@@ -320,7 +311,7 @@ weird prices or other untrustworthy conditions.</p>
           </div>
         </div>
       </div>
-<a href="author.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>

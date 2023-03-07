@@ -47,7 +47,7 @@ staying in hotels. So my first question was:
 
 This can be accessed by the simple query:
 
-SELECT COUNT (DISTINCT id) FROM tokyolistings
+\`\``SELECT COUNT (DISTINCT id) FROM tokyolistings`\`\`\`
 
 ![](images/tokyototalquantity.jpg)
 
@@ -59,10 +59,7 @@ which have the most amount of airbnb locations?"
 
 For this, I used the Following query
 
-SELECT COUNT (DISTINCT id) as Number , neighbourhood\
-FROM tokyolistings \
-GROUP BY neighbourhood \
-ORDER BY Number DESC;
+\`\``SELECT COUNT (DISTINCT id) as Number , neighbourhoodFROM tokyolistingsGROUP BY neighbourhoodORDER BY Number DESC;`\`\`\`
 
 ![](images/tokyoproperneighbourhood.jpg)
 
@@ -97,11 +94,7 @@ between the same neighbourhood. However, by determining the average, we
 can find overall good neighbourhoods to look into. We can filter those
 by both price and location at the same time using the following query:
 
-SELECT COUNT (DISTINCT id) as number_of_locations,
-neighbourhood_cleansed, ROUND(AVG(CAST(REPLACE(price, '\$', '') AS
-INT))) as average_price FROM tokyolistings \
-GROUP BY neighbourhood_cleansed \
-ORDER BY number_of_locations DESC;
+\`\``SELECT COUNT (DISTINCT id) as number_of_locations, neighbourhood_cleansed, ROUND(AVG(CAST(REPLACE(price, '$', '') AS INT))) as average_price FROM tokyolistingsGROUP BY neighbourhood_cleansedORDER BY number_of_locations DESC;`\`\`\`
 
 ![](images/tokyocleansedprice.jpg)
 
@@ -113,7 +106,7 @@ neighbourhood is the most expensive in descending order. For us to show
 in table form starting from the cheapest to most expensive, we can
 simply replace the last line with
 
-ORDER BY number_of_locations ASC;
+\`\``ORDER BY number_of_locations ASC;`\`\`\`
 
 For the sake of better visual understanding, we can use graphs from now
 on to showcase the result of more complicated queries. We will limit the
@@ -174,7 +167,7 @@ Let's start with New York.
 
 For a quick reminder, this would be the query for this case
 
-SELECT COUNT (DISTINCT id) as number_of_locations FROM newyorklistings
+\`\``SELECT COUNT (DISTINCT id) as number_of_locations FROM newyorklistings`\`\`\`
 
 ![](images/newyorktotallocations.jpg)
 
