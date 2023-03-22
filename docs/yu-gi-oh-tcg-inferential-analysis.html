@@ -977,7 +977,7 @@ like the last code.</p>
 <span id="cb30-23"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb30-23" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculating the correlation</span></span>
 <span id="cb30-24"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb30-24" aria-hidden="true" tabindex="-1"></a>correlation_typeattribute <span class="ot">&lt;-</span> <span class="fu">cor</span>(monsters<span class="sc">$</span>type_numeric, monsters<span class="sc">$</span>attribute_numeric)</span>
 <span id="cb30-25"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb30-25" aria-hidden="true" tabindex="-1"></a>correlation_typeattribute</span></code></pre></div>
-<pre><code>## [1] -0.04593948</code></pre>
+<pre><code>## [1] -0.0459</code></pre>
 <p>Just a reminder that correlation can have a value between “-1” and “1”, with
 values closer to 1 showing that the two variables are very correlated. A value
 like this means that there is a small correlation between the Type of a monster
@@ -994,22 +994,22 @@ of Level, Link or Rank; these variables are mutually exclusive.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Let&#39;s find the individual correlations between Attack and Defense and the Rank, Level and Link variables</span></span>
 <span id="cb32-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb32-2" aria-hidden="true" tabindex="-1"></a>atk_level <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>attack),<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>level))</span>
 <span id="cb32-3"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb32-3" aria-hidden="true" tabindex="-1"></a>atk_level</span></code></pre></div>
-<pre><code>## [1] 0.8722601</code></pre>
+<pre><code>## [1] 0.872</code></pre>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb34-1" aria-hidden="true" tabindex="-1"></a>def_level <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>defense),<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>level))</span>
 <span id="cb34-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb34-2" aria-hidden="true" tabindex="-1"></a>def_level</span></code></pre></div>
-<pre><code>## [1] 0.9232742</code></pre>
+<pre><code>## [1] 0.923</code></pre>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb36-1" aria-hidden="true" tabindex="-1"></a>atk_rank <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>attack),<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>rank))</span>
 <span id="cb36-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb36-2" aria-hidden="true" tabindex="-1"></a>atk_rank</span></code></pre></div>
-<pre><code>## [1] 0.1372476</code></pre>
+<pre><code>## [1] 0.137</code></pre>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb38-1" aria-hidden="true" tabindex="-1"></a>def_rank <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>defense),<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>rank))</span>
 <span id="cb38-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb38-2" aria-hidden="true" tabindex="-1"></a>def_rank</span></code></pre></div>
-<pre><code>## [1] 0.1448377</code></pre>
+<pre><code>## [1] 0.145</code></pre>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb40-1" aria-hidden="true" tabindex="-1"></a>atk_link <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>attack),<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>link))</span>
 <span id="cb40-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb40-2" aria-hidden="true" tabindex="-1"></a>atk_link</span></code></pre></div>
-<pre><code>## [1] 0.1189354</code></pre>
+<pre><code>## [1] 0.119</code></pre>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb42-1" aria-hidden="true" tabindex="-1"></a>def_link <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>defense),<span class="sc">!</span><span class="fu">is.na</span>(data<span class="sc">$</span>link))</span>
 <span id="cb42-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb42-2" aria-hidden="true" tabindex="-1"></a>def_link</span></code></pre></div>
-<pre><code>## [1] -0.1928637</code></pre>
+<pre><code>## [1] -0.193</code></pre>
 <p>Some very impressive results. turns out that the value of Attack and Defense are
 almost directly correlated with the Level of the card, while this doesn’t hold
 much true for Link or Ranks. This also seems to be in accord on how the game is
@@ -1039,17 +1039,17 @@ matrix.</p>
 <span id="cb47-4"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-5"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb47-5" aria-hidden="true" tabindex="-1"></a>subset <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(atk,def,lv)</span>
 <span id="cb47-6"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(subset)</span></code></pre></div>
-<pre><code>##           atk       def        lv
-## atk 1.0000000 0.9457381 0.8722601
-## def 0.9457381 1.0000000 0.9232742
-## lv  0.8722601 0.9232742 1.0000000</code></pre>
+<pre><code>##       atk   def    lv
+## atk 1.000 0.946 0.872
+## def 0.946 1.000 0.923
+## lv  0.872 0.923 1.000</code></pre>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;psych&quot;</span>)</span></code></pre></div>
 <pre><code>## Installing package into &#39;C:/Users/Lucas/AppData/Local/R/win-library/4.2&#39;
 ## (as &#39;lib&#39; is unspecified)</code></pre>
 <pre><code>## package &#39;psych&#39; successfully unpacked and MD5 sums checked
 ## 
 ## The downloaded binary packages are in
-##  C:\Users\Lucas\AppData\Local\Temp\RtmpSSM5ER\downloaded_packages</code></pre>
+##  C:\Users\Lucas\AppData\Local\Temp\Rtmpmq6VO6\downloaded_packages</code></pre>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span></code></pre></div>
 <pre><code>## Warning: package &#39;psych&#39; was built under R version 4.2.3</code></pre>
 <pre><code>## 
@@ -1090,20 +1090,20 @@ use it.</p>
 <span id="cb58-5"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb58-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb58-6"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Printing the value of sd_attack</span></span>
 <span id="cb58-7"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sd_attack)</span></code></pre></div>
-<pre><code>## [1] 928.9226</code></pre>
+<pre><code>## [1] 929</code></pre>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(attack_data)</span></code></pre></div>
-<pre><code>## [1] 1549.516</code></pre>
+<pre><code>## [1] 1550</code></pre>
 <div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating the proportion of non-missing values in the &quot;attack&quot; column</span></span>
 <span id="cb62-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb62-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">length</span>(attack_data) <span class="sc">/</span> <span class="fu">nrow</span>(data)</span>
 <span id="cb62-3"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb62-3" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
-<pre><code>## [1] 0.6255745</code></pre>
+<pre><code>## [1] 0.626</code></pre>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Printing the value of p</span></span>
 <span id="cb64-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.6255745</span>,<span class="at">mean =</span> <span class="fl">1549.516</span>, <span class="at">sd =</span> <span class="fl">928.9226</span>)</span></code></pre></div>
-<pre><code>## [1] 1846.915</code></pre>
+<pre><code>## [1] 1847</code></pre>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Let&#39;s also find the Mean absolute deviation</span></span>
 <span id="cb66-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb66-2" aria-hidden="true" tabindex="-1"></a>dist_attack <span class="ot">&lt;-</span> attack_data <span class="sc">-</span> <span class="fu">mean</span>(attack_data)</span>
 <span id="cb66-3"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">abs</span>(dist_attack))</span></code></pre></div>
-<pre><code>## [1] 752.309</code></pre>
+<pre><code>## [1] 752</code></pre>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Finally, let&#39;s find the outlier values.</span></span>
 <span id="cb68-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb68-3"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Finding the quartiles and IQR of the &quot;attack&quot; column</span></span>
@@ -1152,20 +1152,20 @@ our code.</p>
 <span id="cb71-5"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb71-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-6"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb71-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Printing the value of sd_attack</span></span>
 <span id="cb71-7"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb71-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sd_defense)</span></code></pre></div>
-<pre><code>## [1] 849.9999</code></pre>
+<pre><code>## [1] 850</code></pre>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(defense_data)</span></code></pre></div>
-<pre><code>## [1] 1278.86</code></pre>
+<pre><code>## [1] 1279</code></pre>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Computing the proportion of non-missing values in the &quot;attack&quot; column</span></span>
 <span id="cb75-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb75-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">length</span>(defense_data) <span class="sc">/</span> <span class="fu">nrow</span>(data)</span>
 <span id="cb75-3"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb75-3" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
-<pre><code>## [1] 0.60424</code></pre>
+<pre><code>## [1] 0.604</code></pre>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Printing the value of p</span></span>
 <span id="cb77-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qnorm</span>(<span class="fl">0.60424</span>,<span class="at">mean =</span> <span class="fl">1278.86</span>, <span class="at">sd =</span> <span class="fl">849.9999</span>)</span></code></pre></div>
-<pre><code>## [1] 1503.547</code></pre>
+<pre><code>## [1] 1504</code></pre>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Let&#39;s also find the Mean absolute deviation</span></span>
 <span id="cb79-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb79-2" aria-hidden="true" tabindex="-1"></a>dist_defense <span class="ot">&lt;-</span> defense_data <span class="sc">-</span> <span class="fu">mean</span>(defense_data)</span>
 <span id="cb79-3"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">abs</span>(dist_defense))</span></code></pre></div>
-<pre><code>## [1] 695.0719</code></pre>
+<pre><code>## [1] 695</code></pre>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Finally, let&#39;s find the outlier values.</span></span>
 <span id="cb81-2"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb81-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb81-3"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Finding the quartiles and IQR of the &quot;attack&quot; column</span></span>
@@ -1227,9 +1227,9 @@ types we saw before.</p>
 <span id="cb84-22"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb84-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb84-23"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb84-23" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculating the correlation between type and attack/defense</span></span>
 <span id="cb84-24"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb84-24" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(monsters<span class="sc">$</span>type_numeric, monsters<span class="sc">$</span>attack, <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] -0.02362716</code></pre>
+<pre><code>## [1] -0.0236</code></pre>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="yu-gi-oh-tcg-inferential-analysis.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(monsters<span class="sc">$</span>type_numeric, monsters<span class="sc">$</span>defense, <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] -0.009771513</code></pre>
+<pre><code>## [1] -0.00977</code></pre>
 <p>The correlation isn’t very strong, but leaning on average.</p>
 </div>
 <div id="cluster-analysis" class="section level3 hasAnchor" number="2.6.4">
