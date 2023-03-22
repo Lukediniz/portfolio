@@ -4,7 +4,7 @@ editor_options:
     wrap: 80
 ---
 
-#  Yu-gi-oh! TCG Inferential Analysis
+# Yu-gi-oh! TCG Inferential Analysis
 
 ![](images/yugioh-share.jpg)
 
